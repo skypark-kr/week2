@@ -1,3 +1,5 @@
+from quiz_data import create_default_quizzes
+
 def show_menu():
     print("\n === 사자성어 퀴즈 ===")
     print("1. 퀴즈 시작")
@@ -25,13 +27,37 @@ def read_number(prompt, minimum, maximum):
         
         print(f"{minimum}에서 {maximum} 사이의 숫자를 입력해주세요. 다시 입력해주세요.")
         
+def play_quiz(quizzes):
+    if not quizzes:
+        print("퀴즈가 없습니다.")
+        return
+    
+    correct_count = 0
+    print("\n퀴즈를 시작합니다.")    
+    
+    for number, quiz in enumerate(quizzes, start=1):
+        print(f"\n문제 {number}:")
+        quiz.show()
+        
+        selected = read_number("정답을 선택하세요: ", 1, len(quiz.choices))
+        
+        if quiz.is_correct(selected):
+            print("정답입니다!")
+            correct_count += 1
+        else:
+            correct_choice = quiz.choices[quiz.answers - 1]
+            print(f"틀렸습니다. 정답은 {quiz.answers}번입니다.")
+            
+    print(f"\n퀴즈가 끝났습니다. 총 {len(quizzes)}문제 중 {correct_count}문제를 맞추셨습니다.")
+    
 def main():
+    quiz = create_default_quizzes()
     while True:
         show_menu()
         choice = read_number("메뉴를 선택하세요: ", 1, 5)
         
         if choice == 1:
-            print("퀴즈 풀기")
+            play_quiz(quiz)
         elif choice == 2:
             print("퀴즈 추가")
         elif choice == 3:
