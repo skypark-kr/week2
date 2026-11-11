@@ -1,4 +1,5 @@
-from storage import load_quizzes
+from quiz import Quiz
+from storage import load_quizzes, save_quizzes
 
 
 def show_menu():
@@ -56,6 +57,34 @@ class QuizGame:
                 
         print(f"\n퀴즈가 끝났습니다. 총 {len(quizzes)}문제 중 {correct_count}문제를 맞추셨습니다.")
         
+    def add_quiz(self):
+        print("\n퀴즈 추가")
+        
+        while True:
+            question = input("문제를 입력하세요: ").strip()
+            if question:
+                break
+            print("문제를 입력하지 않았습니다. 다시 입력해주세요.")
+
+        choices = []      
+        
+        while len(choices) < 4:
+            number = len(choices) + 1
+            choice = input(f"{number}번 선택지를 입력하세요: ").strip()
+            if not choice:
+                print("선택지를 입력하지 않았습니다. 다시 입력해주세요.")
+                continue
+            choices.append(choice)
+            
+        answers = read_number("정답 번호를 입력하세요: ", 1, len(choices))
+        quiz = Quiz(question=question, choices=choices, answers=answers)
+        
+        update_quizzes = self.quizzes + [quiz]
+        save_quizzes(update_quizzes)
+        self.quizzes = update_quizzes
+        print("퀴즈가 추가되었습니다.")
+        
+        
     def run(self):
         while True:
             show_menu()
@@ -63,7 +92,7 @@ class QuizGame:
             if choice == 1:
                 self.play_quiz()
             elif choice == 2:
-                print("퀴즈 추가")
+                self.add_quiz()
             elif choice == 3:
                 print("퀴즈 목록")
             elif choice == 4:
