@@ -1,5 +1,5 @@
 from quiz import Quiz
-from storage import load_quizzes, save_quizzes
+from storage import load_quizzes, save_quizzes, load_scores, save_scores
 
 
 def show_menu():
@@ -57,6 +57,8 @@ class QuizGame:
                 
         print(f"\n퀴즈가 끝났습니다. 총 {len(quizzes)}문제 중 {correct_count}문제를 맞추셨습니다.")
         
+        save_scores(correct_count, len(self.quizzes))
+        
     def add_quiz(self):
         print("\n퀴즈 추가")
         
@@ -83,7 +85,27 @@ class QuizGame:
         save_quizzes(update_quizzes)
         self.quizzes = update_quizzes
         print("퀴즈가 추가되었습니다.")
+
+    def list_quizzes(self):
+        if not self.quizzes:
+            print("퀴즈가 없습니다.")
+            return
         
+        print(f"\n퀴즈 목록 ({len(self.quizzes)}문제):")       
+        for number, quiz in enumerate(self.quizzes, start=1):
+            print(f"{number}. {quiz.question}")
+            
+    def show_scores(self):
+        scores = load_scores()
+        if not scores:
+            print("점수가 없습니다.")
+            return
+        
+        print("\n점수 확인")
+        for number, score in enumerate(scores, start=1):
+            correct = score["correct"]
+            total = score["total"]
+            print(f"{number}회차: {correct}/{total} 문제 맞춤")
         
     def run(self):
         while True:
@@ -94,9 +116,9 @@ class QuizGame:
             elif choice == 2:
                 self.add_quiz()
             elif choice == 3:
-                print("퀴즈 목록")
+                self.list_quizzes()
             elif choice == 4:
-                print("점수 확인")
+                self.show_scores()
             elif choice == 5:
                 print("퀴즈를 종료합니다.")
                 break        

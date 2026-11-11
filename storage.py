@@ -17,6 +17,9 @@ def save_quizzes(quizzes):
             for quiz in quizzes
         ]
     }
+    
+    data["scores"] = load_scores()
+    
     with state_file.open("w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
     
@@ -54,3 +57,24 @@ def load_quizzes():
     quizzes = create_default_quizzes()
     save_quizzes(quizzes)
     return quizzes
+
+def load_scores():
+    try:
+        with state_file.open("r", encoding="utf-8") as file:
+            data = json.load(file)
+    except (FileNotFoundError, ValueError):
+        return []
+    
+    if isinstance(data, dict) and isinstance(data.get("scores"), list):
+        return data["scores"]
+    
+def save_scores(correct, total):
+    with state_file.open("r", encoding="utf-8") as file:
+        data = json.load(file)
+        
+        scores = data.setdefault("scores", [])
+        scores.append({"correct": correct, "total": total})
+        
+    with state_file.open("w", encoding="utf-8") as file:
+        json.dump(data, file, ensure_ascii=False, indent=2)
+        
