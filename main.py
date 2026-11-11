@@ -26,52 +26,58 @@ def read_number(prompt, minimum, maximum):
             return number
         
         print(f"{minimum}에서 {maximum} 사이의 숫자를 입력해주세요. 다시 입력해주세요.")
+
+
+class QuizGame:
+    def __init__(self):
+        self.quizzes = create_default_quizzes()
         
-def play_quiz(quizzes):
-    if not quizzes:
-        print("퀴즈가 없습니다.")
-        return
-    
-    correct_count = 0
-    print("\n퀴즈를 시작합니다.")    
-    
-    for number, quiz in enumerate(quizzes, start=1):
-        print(f"\n문제 {number}:")
-        quiz.show()
+    def play_quiz(self):
+        quizzes = self.quizzes
+        if not quizzes:
+            print("퀴즈가 없습니다.")
+            return
         
-        selected = read_number("정답을 선택하세요: ", 1, len(quiz.choices))
+        correct_count = 0
+        print("\n퀴즈를 시작합니다.")    
         
-        if quiz.is_correct(selected):
-            print("정답입니다!")
-            correct_count += 1
-        else:
-            correct_choice = quiz.choices[quiz.answers - 1]
-            print(f"틀렸습니다. 정답은 {quiz.answers}번입니다.")
+        for number, quiz in enumerate(self.quizzes, start=1):
+            print(f"\n문제 {number}:")
+            quiz.show()
+            selected = read_number("정답을 선택하세요: ", 1, len(quiz.choices))
             
-    print(f"\n퀴즈가 끝났습니다. 총 {len(quizzes)}문제 중 {correct_count}문제를 맞추셨습니다.")
-    
-def main():
-    quiz = create_default_quizzes()
-    while True:
-        show_menu()
-        choice = read_number("메뉴를 선택하세요: ", 1, 5)
-        
-        if choice == 1:
-            play_quiz(quiz)
-        elif choice == 2:
-            print("퀴즈 추가")
-        elif choice == 3:
-            print("퀴즈 목록")
-        elif choice == 4:
-            print("점수 확인")
-        elif choice == 5:
-            print("퀴즈를 종료합니다.")
-            break        
+            if quiz.is_correct(selected):
+                print("정답입니다!")
+                correct_count += 1
+            else:
+                correct_choice = quiz.choices[quiz.answers - 1]
+                print(f"틀렸습니다. 정답은 {quiz.answers}번입니다.")
                 
+        print(f"\n퀴즈가 끝났습니다. 총 {len(quizzes)}문제 중 {correct_count}문제를 맞추셨습니다.")
+        
+    def run(self):
+        while True:
+            show_menu()
+            choice = read_number("메뉴를 선택하세요: ", 1, 5)
+            if choice == 1:
+                self.play_quiz()
+            elif choice == 2:
+                print("퀴즈 추가")
+            elif choice == 3:
+                print("퀴즈 목록")
+            elif choice == 4:
+                print("점수 확인")
+            elif choice == 5:
+                print("퀴즈를 종료합니다.")
+                break        
+def main():
+    game = QuizGame()
+    game.run()
+    
 if __name__ == "__main__":
     try:
         main()
-    except (KeyboardInterrupt, EOFError):
-        print("\n프로그램이 종료되었습니다.")
+    except KeyboardInterrupt:
+        print("\n퀴즈를 종료합니다.")
         
         
