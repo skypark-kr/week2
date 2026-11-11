@@ -1,4 +1,5 @@
-from quiz_data import create_default_quizzes
+from storage import load_quizzes
+
 
 def show_menu():
     print("\n === 사자성어 퀴즈 ===")
@@ -30,7 +31,7 @@ def read_number(prompt, minimum, maximum):
 
 class QuizGame:
     def __init__(self):
-        self.quizzes = create_default_quizzes()
+        self.quizzes = load_quizzes()
         
     def play_quiz(self):
         quizzes = self.quizzes
