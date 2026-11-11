@@ -51,7 +51,7 @@ def load_quizzes():
     
     except FileNotFoundError:
         print("퀴즈 상태 파일이 존재하지 않습니다. 기본 퀴즈를 생성합니다.")
-    except (ValueError, KeyError, TypeError):
+    except (ValueError, KeyError, TypeError) as e:
         print(f"퀴즈 상태 파일 오류: {e}. 기본 퀴즈를 생성합니다.")
     
     quizzes = create_default_quizzes()
@@ -67,13 +67,17 @@ def load_scores():
     
     if isinstance(data, dict) and isinstance(data.get("scores"), list):
         return data["scores"]
+    return []
     
 def save_scores(correct, total):
     with state_file.open("r", encoding="utf-8") as file:
         data = json.load(file)
         
-        scores = data.setdefault("scores", [])
+        scores = data.get("scores")
+        if not isinstance(scores, list):
+            scores = []
         scores.append({"correct": correct, "total": total})
+        
         
     with state_file.open("w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
