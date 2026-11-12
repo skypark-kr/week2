@@ -12,7 +12,8 @@ def show_menu():
     
 def read_number(prompt, minimum, maximum):
     while True:
-        text = input(prompt).strip()
+        print(prompt, end="", flush=True)
+        text = input().strip()
         
         if not text:
             print("입력값이 없습니다. 다시 입력해주세요.")
@@ -129,7 +130,9 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, EOFError):
         print("\n퀴즈를 종료합니다.")
+    except OSError as e:
+        print(f"파일 오류: {e}. 퀴즈를 종료합니다.")
         
         
