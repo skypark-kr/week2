@@ -155,3 +155,4 @@ git clone https://github.com/skypark-kr/week2.git week2-review
 cd week2-review
 git pull --ff-only
 ```
+- clone 실습
