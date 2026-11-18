@@ -156,6 +156,12 @@ cd week2-review
 git pull --ff-only
 ```
 - clone 실습
-! [git clone 실행 화면] (2.git_clone.png)
-! [복제본에서 commit과 push] (3.clone_push.png)
-! [git pull 결과] (4.git_pull.png)
+1) 저장소 복제
+
+![git clone 실행 화면](2.git_clone.png)
+
+2) 복제본 수정 후 commit, push
+![복제본에서 commit과 push](3.clone_push.png)
+
+3) 원래 작업 폴더에서 pull로 변경 반영
+![git pull 결과](4.git_pull.png)
