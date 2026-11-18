@@ -156,3 +156,6 @@ cd week2-review
 git pull --ff-only
 ```
 - clone 실습
+! [git clone 실행 화면] (2.git_clone.png)
+! [복제본에서 commit과 push] (3.clone_push.png)
+! [git pull 결과] (4.git_pull.png)
